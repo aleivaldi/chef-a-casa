@@ -169,7 +169,7 @@ main{flex:1;min-height:0;position:relative}
 
 .shelves{grid-area:shelves;display:flex;flex-direction:column;min-height:0;min-width:0}
 .tabs{display:flex;gap:8px;padding:0 14px}
-.tab{flex:1;min-height:62px;border-radius:22px 22px 0 0;font-family:var(--f-display);font-size:24px;font-weight:700;background:var(--paper-dim);color:var(--ink-soft)}
+.tab{flex:1;min-width:0;min-height:62px;padding:0 6px;border-radius:22px 22px 0 0;font-family:var(--f-display);font-size:clamp(17px,2.1vw,24px);line-height:1.1;font-weight:700;background:var(--paper-dim);color:var(--ink-soft)}
 .tab .emo{font-size:26px}
 .tab.on{color:var(--ink)}
 .tab[data-shelf=frigo].on{background:var(--fridge-line)}
@@ -253,8 +253,8 @@ main{flex:1;min-height:0;position:relative}
 .menu-btn .lbl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .menu-btn .arrow{color:var(--ink-soft);font-size:28px}
 .row-label{font-size:18px;color:var(--ink-soft)}
-.seg{display:flex;gap:8px}
-.seg button{flex:1;min-height:58px;border-radius:18px;background:var(--cream);font-size:20px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{flex:1 1 120px;min-height:58px;border-radius:18px;background:var(--cream);font-size:20px}
 .seg button.on{background:var(--leaf);color:var(--paper)}
 .danger{min-height:64px;border-radius:18px;font-size:20px;background:var(--cream);color:var(--tomato-dark);border:3px solid var(--tomato)}
 .danger.confirm{background:var(--tomato);color:var(--paper)}
@@ -404,7 +404,7 @@ main{flex:1;min-height:0;position:relative}
         <span class="row-label" data-t="voice"></span>
         <div class="seg" id="seg-voice"><button data-v="1" data-t="yes"></button><button data-v="0" data-t="no"></button></div>
         <span class="row-label" data-t="lang"></span>
-        <div class="seg" id="seg-lang"><button data-v="it">Italiano</button><button data-v="en">English</button></div>
+        <div class="seg" id="seg-lang"><button data-v="it">Italiano</button><button data-v="en">English</button><button data-v="fr">Français</button><button data-v="de">Deutsch</button><button data-v="es">Español</button></div>
         <button class="danger" id="btn-reset"></button>
         <button class="chunky go" id="btn-settings-done" data-t="done"></button>
       </div>
@@ -510,48 +510,50 @@ const MAX_FAMILY = 6;
 
 /* ---------- text ---------- */
 const ING = {
-  uova: { e: '🥚', w: 'frigo', it: 'Uova', en: 'Eggs' },
-  latte: { e: '🥛', w: 'frigo', it: 'Latte', en: 'Milk' },
-  burro: { e: '🧈', w: 'frigo', it: 'Burro', en: 'Butter' },
-  formaggio: { e: '🧀', w: 'frigo', it: 'Formaggio', en: 'Cheese' },
-  prosciutto: { e: '🥓', w: 'frigo', it: 'Prosciutto', en: 'Bacon' },
-  pollo: { e: '🍗', w: 'frigo', it: 'Pollo', en: 'Chicken' },
-  lattuga: { e: '🥬', w: 'frigo', it: 'Lattuga', en: 'Lettuce' },
-  pomodoro: { e: '🍅', w: 'frigo', it: 'Pomodoro', en: 'Tomato' },
-  carota: { e: '🥕', w: 'frigo', it: 'Carota', en: 'Carrot' },
-  zucchina: { e: '🥒', w: 'frigo', it: 'Zucchina', en: 'Zucchini' },
-  fragola: { e: '🍓', w: 'frigo', it: 'Fragole', en: 'Strawberries' },
-  banana: { e: '🍌', w: 'frigo', it: 'Banana', en: 'Banana' },
-  mela: { e: '🍎', w: 'frigo', it: 'Mela', en: 'Apple' },
-  pasta: { s: SVG.pasta, w: 'dispensa', it: 'Pasta', en: 'Pasta' },
-  farina: { e: '🌾', w: 'dispensa', it: 'Farina', en: 'Flour' },
-  zucchero: { s: SVG.zucchero, w: 'dispensa', it: 'Zucchero', en: 'Sugar' },
-  sale: { e: '🧂', w: 'dispensa', it: 'Sale', en: 'Salt' },
-  olio: { e: '🫒', w: 'dispensa', it: 'Olio', en: 'Olive oil' },
-  cioccolato: { e: '🍫', w: 'dispensa', it: 'Cioccolato', en: 'Chocolate' },
-  pane: { e: '🍞', w: 'dispensa', it: 'Pane', en: 'Bread' },
-  patata: { e: '🥔', w: 'dispensa', it: 'Patate', en: 'Potatoes' },
-  basilico: { e: '🌿', w: 'dispensa', it: 'Basilico', en: 'Basil' },
-  miele: { e: '🍯', w: 'dispensa', it: 'Miele', en: 'Honey' },
+  uova: { e: '🥚', w: 'frigo', it: 'Uova', en: 'Eggs', fr: "Œufs", de: "Eier", es: "Huevos" },
+  latte: { e: '🥛', w: 'frigo', it: 'Latte', en: 'Milk', fr: "Lait", de: "Milch", es: "Leche" },
+  burro: { e: '🧈', w: 'frigo', it: 'Burro', en: 'Butter', fr: "Beurre", de: "Butter", es: "Mantequilla" },
+  formaggio: { e: '🧀', w: 'frigo', it: 'Formaggio', en: 'Cheese', fr: "Fromage", de: "Käse", es: "Queso" },
+  prosciutto: { e: '🥓', w: 'frigo', it: 'Prosciutto', en: 'Bacon', fr: "Lardons", de: "Speck", es: "Beicon" },
+  pollo: { e: '🍗', w: 'frigo', it: 'Pollo', en: 'Chicken', fr: "Poulet", de: "Hähnchen", es: "Pollo" },
+  lattuga: { e: '🥬', w: 'frigo', it: 'Lattuga', en: 'Lettuce', fr: "Laitue", de: "Kopfsalat", es: "Lechuga" },
+  pomodoro: { e: '🍅', w: 'frigo', it: 'Pomodoro', en: 'Tomato', fr: "Tomate", de: "Tomate", es: "Tomate" },
+  carota: { e: '🥕', w: 'frigo', it: 'Carota', en: 'Carrot', fr: "Carotte", de: "Karotte", es: "Zanahoria" },
+  zucchina: { e: '🥒', w: 'frigo', it: 'Zucchina', en: 'Zucchini', fr: "Courgette", de: "Zucchini", es: "Calabacín" },
+  fragola: { e: '🍓', w: 'frigo', it: 'Fragole', en: 'Strawberries', fr: "Fraises", de: "Erdbeeren", es: "Fresas" },
+  banana: { e: '🍌', w: 'frigo', it: 'Banana', en: 'Banana', fr: "Banane", de: "Banane", es: "Plátano" },
+  mela: { e: '🍎', w: 'frigo', it: 'Mela', en: 'Apple', fr: "Pomme", de: "Apfel", es: "Manzana" },
+  pasta: { s: SVG.pasta, w: 'dispensa', it: 'Pasta', en: 'Pasta', fr: "Pâtes", de: "Nudeln", es: "Pasta" },
+  farina: { e: '🌾', w: 'dispensa', it: 'Farina', en: 'Flour', fr: "Farine", de: "Mehl", es: "Harina" },
+  zucchero: { s: SVG.zucchero, w: 'dispensa', it: 'Zucchero', en: 'Sugar', fr: "Sucre", de: "Zucker", es: "Azúcar" },
+  sale: { e: '🧂', w: 'dispensa', it: 'Sale', en: 'Salt', fr: "Sel", de: "Salz", es: "Sal" },
+  olio: { e: '🫒', w: 'dispensa', it: 'Olio', en: 'Olive oil', fr: "Huile d'olive", de: "Olivenöl", es: "Aceite" },
+  cioccolato: { e: '🍫', w: 'dispensa', it: 'Cioccolato', en: 'Chocolate', fr: "Chocolat", de: "Schokolade", es: "Chocolate" },
+  pane: { e: '🍞', w: 'dispensa', it: 'Pane', en: 'Bread', fr: "Pain", de: "Brot", es: "Pan" },
+  patata: { e: '🥔', w: 'dispensa', it: 'Patate', en: 'Potatoes', fr: "Pommes de terre", de: "Kartoffeln", es: "Patatas" },
+  basilico: { e: '🌿', w: 'dispensa', it: 'Basilico', en: 'Basil', fr: "Basilic", de: "Basilikum", es: "Albahaca" },
+  miele: { e: '🍯', w: 'dispensa', it: 'Miele', en: 'Honey', fr: "Miel", de: "Honig", es: "Miel" },
 };
 const icon = id => `<span class="ico">${ING[id].s || ING[id].e}</span>`;
 const ingName = id => ING[id][lang];
+// WHY: German capitalises every noun, so ingredient names keep their case mid-sentence.
+const inSentence = s => (lang === 'de' ? s : s.toLowerCase());
 
 const RECIPES = [
-  { id: 'insalata', e: '🥗', t: 'ciotola', i: ['lattuga', 'pomodoro', 'olio'], u: 0, it: ['Insalata', "l'insalata"], en: ['Salad', 'a salad'] },
-  { id: 'pasta', e: '🍝', t: 'pentola', i: ['pasta', 'pomodoro', 'basilico'], u: 0, it: ['Pasta al pomodoro', 'la pasta al pomodoro'], en: ['Tomato pasta', 'tomato pasta'] },
-  { id: 'macedonia', e: '🍨', t: 'ciotola', i: ['fragola', 'banana', 'mela'], u: 2, it: ['Macedonia', 'la macedonia'], en: ['Fruit salad', 'a fruit salad'] },
-  { id: 'frittata', e: '🍳', t: 'padella', i: ['uova', 'formaggio', 'olio'], u: 4, it: ['Frittata', 'la frittata'], en: ['Omelette', 'an omelette'] },
-  { id: 'patatine', e: '🍟', t: 'forno', i: ['patata', 'olio', 'sale'], u: 7, it: ['Patatine al forno', 'le patatine al forno'], en: ['Oven fries', 'oven fries'] },
-  { id: 'pancake', e: '🥞', t: 'padella', i: ['farina', 'latte', 'uova'], u: 10, it: ['Pancake', 'i pancake'], en: ['Pancakes', 'pancakes'] },
-  { id: 'toast', e: '🥪', t: 'padella', i: ['pane', 'formaggio', 'prosciutto'], u: 13, it: ['Toast', 'il toast'], en: ['Toastie', 'a toastie'] },
-  { id: 'pizza', e: '🍕', t: 'forno', i: ['farina', 'pomodoro', 'formaggio', 'olio'], u: 16, it: ['Pizza', 'la pizza'], en: ['Pizza', 'a pizza'] },
-  { id: 'cioccolata', e: '☕', t: 'pentola', i: ['latte', 'cioccolato', 'zucchero'], u: 20, it: ['Cioccolata calda', 'la cioccolata calda'], en: ['Hot chocolate', 'a hot chocolate'] },
-  { id: 'biscotti', e: '🍪', t: 'forno', i: ['farina', 'burro', 'zucchero', 'cioccolato'], u: 24, it: ['Biscotti', 'i biscotti'], en: ['Cookies', 'cookies'] },
-  { id: 'minestrone', e: '🍲', t: 'pentola', i: ['carota', 'patata', 'zucchina', 'sale'], u: 28, it: ['Minestrone', 'il minestrone'], en: ['Vegetable soup', 'a vegetable soup'] },
-  { id: 'pollo', e: '🍗', t: 'forno', i: ['pollo', 'patata', 'olio', 'sale'], u: 33, it: ['Pollo con patate', 'il pollo con le patate'], en: ['Chicken & potatoes', 'chicken and potatoes'] },
-  { id: 'muffin', e: '🧁', t: 'forno', i: ['farina', 'uova', 'zucchero', 'burro', 'fragola'], u: 38, it: ['Muffin alle fragole', 'i muffin alle fragole'], en: ['Strawberry muffins', 'strawberry muffins'] },
-  { id: 'torta', e: '🎂', t: 'forno', i: ['farina', 'uova', 'zucchero', 'burro', 'latte', 'cioccolato'], u: 44, it: ['Torta al cioccolato', 'la torta al cioccolato'], en: ['Chocolate cake', 'a chocolate cake'] },
+  { id: 'insalata', e: '🥗', t: 'ciotola', i: ['lattuga', 'pomodoro', 'olio'], u: 0, it: ['Insalata', "l'insalata"], en: ['Salad', 'a salad'], fr: ["Salade", "une salade"], de: ["Salat", "einen Salat"], es: ["Ensalada", "una ensalada"] },
+  { id: 'pasta', e: '🍝', t: 'pentola', i: ['pasta', 'pomodoro', 'basilico'], u: 0, it: ['Pasta al pomodoro', 'la pasta al pomodoro'], en: ['Tomato pasta', 'tomato pasta'], fr: ["Pâtes à la tomate", "des pâtes à la tomate"], de: ["Tomatennudeln", "Tomatennudeln"], es: ["Pasta con tomate", "pasta con tomate"] },
+  { id: 'macedonia', e: '🍨', t: 'ciotola', i: ['fragola', 'banana', 'mela'], u: 2, it: ['Macedonia', 'la macedonia'], en: ['Fruit salad', 'a fruit salad'], fr: ["Salade de fruits", "une salade de fruits"], de: ["Obstsalat", "einen Obstsalat"], es: ["Macedonia", "una macedonia"] },
+  { id: 'frittata', e: '🍳', t: 'padella', i: ['uova', 'formaggio', 'olio'], u: 4, it: ['Frittata', 'la frittata'], en: ['Omelette', 'an omelette'], fr: ["Omelette", "une omelette"], de: ["Omelett", "ein Omelett"], es: ["Tortilla", "una tortilla"] },
+  { id: 'patatine', e: '🍟', t: 'forno', i: ['patata', 'olio', 'sale'], u: 7, it: ['Patatine al forno', 'le patatine al forno'], en: ['Oven fries', 'oven fries'], fr: ["Frites au four", "des frites au four"], de: ["Ofenpommes", "Ofenpommes"], es: ["Patatas al horno", "patatas al horno"] },
+  { id: 'pancake', e: '🥞', t: 'padella', i: ['farina', 'latte', 'uova'], u: 10, it: ['Pancake', 'i pancake'], en: ['Pancakes', 'pancakes'], fr: ["Pancakes", "des pancakes"], de: ["Pfannkuchen", "Pfannkuchen"], es: ["Tortitas", "tortitas"] },
+  { id: 'toast', e: '🥪', t: 'padella', i: ['pane', 'formaggio', 'prosciutto'], u: 13, it: ['Toast', 'il toast'], en: ['Toastie', 'a toastie'], fr: ["Croque-monsieur", "un croque-monsieur"], de: ["Toast", "einen Toast"], es: ["Sándwich mixto", "un sándwich mixto"] },
+  { id: 'pizza', e: '🍕', t: 'forno', i: ['farina', 'pomodoro', 'formaggio', 'olio'], u: 16, it: ['Pizza', 'la pizza'], en: ['Pizza', 'a pizza'], fr: ["Pizza", "une pizza"], de: ["Pizza", "eine Pizza"], es: ["Pizza", "una pizza"] },
+  { id: 'cioccolata', e: '☕', t: 'pentola', i: ['latte', 'cioccolato', 'zucchero'], u: 20, it: ['Cioccolata calda', 'la cioccolata calda'], en: ['Hot chocolate', 'a hot chocolate'], fr: ["Chocolat chaud", "un chocolat chaud"], de: ["Heiße Schokolade", "eine heiße Schokolade"], es: ["Chocolate caliente", "un chocolate caliente"] },
+  { id: 'biscotti', e: '🍪', t: 'forno', i: ['farina', 'burro', 'zucchero', 'cioccolato'], u: 24, it: ['Biscotti', 'i biscotti'], en: ['Cookies', 'cookies'], fr: ["Cookies", "des cookies"], de: ["Kekse", "Kekse"], es: ["Galletas", "galletas"] },
+  { id: 'minestrone', e: '🍲', t: 'pentola', i: ['carota', 'patata', 'zucchina', 'sale'], u: 28, it: ['Minestrone', 'il minestrone'], en: ['Vegetable soup', 'a vegetable soup'], fr: ["Soupe de légumes", "une soupe de légumes"], de: ["Gemüsesuppe", "eine Gemüsesuppe"], es: ["Sopa de verduras", "una sopa de verduras"] },
+  { id: 'pollo', e: '🍗', t: 'forno', i: ['pollo', 'patata', 'olio', 'sale'], u: 33, it: ['Pollo con patate', 'il pollo con le patate'], en: ['Chicken & potatoes', 'chicken and potatoes'], fr: ["Poulet et pommes de terre", "du poulet aux pommes de terre"], de: ["Hähnchen mit Kartoffeln", "Hähnchen mit Kartoffeln"], es: ["Pollo con patatas", "pollo con patatas"] },
+  { id: 'muffin', e: '🧁', t: 'forno', i: ['farina', 'uova', 'zucchero', 'burro', 'fragola'], u: 38, it: ['Muffin alle fragole', 'i muffin alle fragole'], en: ['Strawberry muffins', 'strawberry muffins'], fr: ["Muffins aux fraises", "des muffins aux fraises"], de: ["Erdbeermuffins", "Erdbeermuffins"], es: ["Magdalenas de fresa", "magdalenas de fresa"] },
+  { id: 'torta', e: '🎂', t: 'forno', i: ['farina', 'uova', 'zucchero', 'burro', 'latte', 'cioccolato'], u: 44, it: ['Torta al cioccolato', 'la torta al cioccolato'], en: ['Chocolate cake', 'a chocolate cake'], fr: ["Gâteau au chocolat", "un gâteau au chocolat"], de: ["Schokoladenkuchen", "einen Schokoladenkuchen"], es: ["Tarta de chocolate", "una tarta de chocolate"] },
 ];
 const rName = r => r[lang][0];
 const rArt = r => r[lang][1];
@@ -607,7 +609,83 @@ const STR = {
     tail2: [c => `Almost perfect, Chef ${c}!`, "You're so close!"],
     tail1: ['I love you anyway!', "Shall we try again? It's fun!", 'What an adventurous dish!', "The neighbour's cat says it's yummy!"],
   },
+  fr: {
+    atHome: 'à la maison', play: 'On cuisine !', recipes: 'Recettes', secret: 'Recette secrète', more: n => `encore ${n}`, allDone: 'Tu as débloqué toutes les recettes !',
+    frigo: 'Frigo', dispensa: 'Placard', pickIng: 'Choisis les ingrédients', pickTool: 'Choisis où cuisiner ☝️', addIng: 'Ajoute les ingrédients !',
+    cooking: 'Ça cuit…', serveTo: n => `Servir ${n} 🍽️`, enjoy: 'Bon appétit !',
+    recipeRow: 'La recette', extraRow: 'En trop', next: 'Suivant', newRecipe: 'Nouvelle recette !', yay: 'Youpi !', ok: 'OK !', gnam: 'Miam miam !',
+    bookTitle: c => `Les recettes de ${c}`,
+    helloQ: "Comment tu t'appelles ?", namePh: 'Ton prénom', faceQ: 'Choisis ton visage', go: 'Suivant',
+    familyQ: 'Qui est à la maison ?', familyHint: 'Touche un visage pour le changer.', add: 'Ajouter', start: "C'est parti !", done: 'Terminé',
+    settings: 'Réglages', family: 'Famille', voice: 'Voix qui lit les phrases', yes: 'Oui', no: 'Non', lang: 'Langue',
+    reset: 'Remettre les étoiles à zéro', resetSure: 'Sûr ? Touche encore pour effacer', resetDone: "C'est fait : on repart de zéro ✓", pickFace: 'Choisis un visage',
+    namePlaceholder: 'Prénom', remove: 'Enlever', home: 'Accueil', sound: 'Son', back: 'Plus de jeux',
+    tools: { ciotola: ['Bol', 'Mélange !', 'dans le bol'], pentola: ['Casserole', 'Cuis !', 'dans la casserole'], padella: ['Poêle', 'Cuis !', 'dans la poêle'], forno: ['Four', 'Au four !', 'au four'] },
+    defaultFamily: [['🧔', 'Papa'], ['👩', 'Maman'], ['👦', 'Frère']],
+    hi: c => `Salut ! Je suis Chef ${c} ! On cuisine ensemble ?`,
+    ask: [(c, a) => `Chef ${c}, tu me prépares ${a} ?`, (c, a) => `J'ai très faim ! Je voudrais ${a}, s'il te plaît !`, (c, a) => `${c}, tu peux cuisiner ${a} ?`, (c, a) => `Et si tu cuisinais ${a} ?`],
+    pet: { '🐶': 'Ouaf ouaf ! ', '🐱': 'Miaou ! ' },
+    needs: (list, tool) => `Il te faut : ${list}. Ça se cuisine ${tool}.`, and: 'et',
+    unlockSay: a => `Nouvelle recette : ${a} !`,
+    good3: ['Délicieux ! Je me lèche les babines !', 'Parfait ! Quel chef génial !', c => `Trop bon ! Merci Chef ${c} !`, "Miam ! J'en veux encore !"],
+    wrongTool: [(u, r) => `Cuit ${u} ? Quelle drôle d'idée ! D'habitude, ça se fait ${r}.`, (u, r) => `${cap(u)} ? Quelle imagination ! La prochaine fois, essaie ${r}.`],
+    extra: [x => `Hé, tu as aussi mis : ${x} ! Quelle surprise !`, x => `Mmm... ${x} ? Ça a un goût d'astronaute !`, x => `${cap(x)} ? Je n'avais jamais goûté ça comme ça !`],
+    missing: [x => `La prochaine fois, ajoute aussi : ${x} !`, x => `Bon ! Mais il manquait : ${x}.`],
+    tail2: [c => `Presque parfait, Chef ${c} !`, 'Tu y es presque !'],
+    tail1: ["Je t'aime quand même !", "On réessaie ensemble ? C'est rigolo !", 'Quel plat aventureux !', "Le chat du voisin dit que c'est délicieux !"],
+  },
+  de: {
+    atHome: 'zu Hause', play: 'Los, kochen!', recipes: 'Rezepte', secret: 'Geheimrezept', more: n => `noch ${n}`, allDone: 'Du hast alle Rezepte freigeschaltet!',
+    frigo: 'Kühlschrank', dispensa: 'Vorrat', pickIng: 'Wähle die Zutaten', pickTool: 'Wähle, wo du kochst ☝️', addIng: 'Gib die Zutaten dazu!',
+    cooking: 'Es kocht…', serveTo: n => `Für ${n} servieren 🍽️`, enjoy: 'Guten Appetit!',
+    recipeRow: 'Das Rezept', extraRow: 'Zu viel', next: 'Weiter', newRecipe: 'Neues Rezept!', yay: 'Juhu!', ok: 'OK!', gnam: 'Mampf mampf!',
+    bookTitle: c => `Rezepte von ${c}`,
+    helloQ: 'Wie heißt du?', namePh: 'Dein Name', faceQ: 'Wähle dein Gesicht', go: 'Weiter',
+    familyQ: 'Wer ist zu Hause?', familyHint: 'Tippe auf ein Gesicht, um es zu ändern.', add: 'Hinzufügen', start: "Los geht's!", done: 'Fertig',
+    settings: 'Einstellungen', family: 'Familie', voice: 'Stimme liest die Sätze vor', yes: 'Ja', no: 'Nein', lang: 'Sprache',
+    reset: 'Sterne zurücksetzen', resetSure: 'Sicher? Nochmal tippen zum Zurücksetzen', resetDone: 'Erledigt: alles auf null ✓', pickFace: 'Wähle ein Gesicht',
+    namePlaceholder: 'Name', remove: 'Entfernen', home: 'Start', sound: 'Ton', back: 'Mehr Spiele',
+    tools: { ciotola: ['Schüssel', 'Rühren!', 'in der Schüssel'], pentola: ['Topf', 'Kochen!', 'im Topf'], padella: ['Pfanne', 'Braten!', 'in der Pfanne'], forno: ['Ofen', 'Backen!', 'im Ofen'] },
+    defaultFamily: [['🧔', 'Papa'], ['👩', 'Mama'], ['👦', 'Bruder']],
+    hi: c => `Hallo! Ich bin Chef ${c}! Kochen wir zusammen?`,
+    ask: [(c, a) => `Chef ${c}, machst du mir ${a}?`, (c, a) => `Ich habe so Hunger! Ich hätte gern ${a}, bitte!`, (c, a) => `${c}, kochst du heute ${a}?`, (c, a) => `Kannst du ${a} kochen?`],
+    pet: { '🐶': 'Wuff wuff! ', '🐱': 'Miau! ' },
+    needs: (list, tool) => `Du brauchst: ${list}. Gekocht wird ${tool}.`, and: 'und',
+    unlockSay: (a, n) => `Neues Rezept: ${n}!`,
+    good3: ['Lecker! Ich lecke mir die Finger!', 'Perfekt! Du kochst wie ein Profi!', c => `Köstlich! Danke, Chef ${c}!`, 'Mmm! Kann ich noch mehr haben?'],
+    wrongTool: [(u, r) => `Gekocht ${u}? Was für eine lustige Idee! Normalerweise macht man das ${r}.`, (u, r) => `${cap(u)}? Wie kreativ! Probier es nächstes Mal ${r}.`],
+    extra: [x => `Hey, da ist ja auch ${x} drin! Was für eine Überraschung!`, x => `Mmm... ${x}? Das schmeckt wie im Weltall!`, x => `Mit ${x}? So habe ich das noch nie gegessen!`],
+    missing: [x => `Nächstes Mal gib auch ${x} dazu!`, x => `Gut! Aber es fehlte: ${x}.`],
+    tail2: [c => `Fast perfekt, Chef ${c}!`, 'Du hast es fast geschafft!'],
+    tail1: ['Ich hab dich trotzdem lieb!', 'Probieren wir es nochmal? Das macht Spaß!', 'Was für ein abenteuerliches Gericht!', 'Die Katze vom Nachbarn sagt, es ist lecker!'],
+  },
+  es: {
+    atHome: 'en casa', play: '¡A cocinar!', recipes: 'Recetas', secret: 'Receta secreta', more: n => `faltan ${n}`, allDone: '¡Has desbloqueado todas las recetas!',
+    frigo: 'Nevera', dispensa: 'Despensa', pickIng: 'Elige los ingredientes', pickTool: 'Elige dónde cocinar ☝️', addIng: '¡Añade los ingredientes!',
+    cooking: 'Cocinando…', serveTo: n => `Servir a ${n} 🍽️`, enjoy: '¡Que aproveche!',
+    recipeRow: 'La receta', extraRow: 'De más', next: 'Siguiente', newRecipe: '¡Nueva receta!', yay: '¡Bien!', ok: '¡Vale!', gnam: '¡Ñam ñam!',
+    bookTitle: c => `Las recetas de ${c}`,
+    helloQ: '¿Cómo te llamas?', namePh: 'Tu nombre', faceQ: 'Elige tu cara', go: 'Siguiente',
+    familyQ: '¿Quién hay en casa?', familyHint: 'Toca una cara para cambiarla.', add: 'Añadir', start: '¡Empezamos!', done: 'Listo',
+    settings: 'Ajustes', family: 'Familia', voice: 'Voz que lee las frases', yes: 'Sí', no: 'No', lang: 'Idioma',
+    reset: 'Poner las estrellas a cero', resetSure: '¿Seguro? Toca otra vez para borrar', resetDone: 'Hecho: empezamos de cero ✓', pickFace: 'Elige una cara',
+    namePlaceholder: 'Nombre', remove: 'Quitar', home: 'Inicio', sound: 'Sonido', back: 'Más juegos',
+    tools: { ciotola: ['Bol', '¡Mezcla!', 'en el bol'], pentola: ['Olla', '¡Cocina!', 'en la olla'], padella: ['Sartén', '¡Cocina!', 'en la sartén'], forno: ['Horno', '¡Al horno!', 'en el horno'] },
+    defaultFamily: [['🧔', 'Papá'], ['👩', 'Mamá'], ['👦', 'Hermano']],
+    hi: c => `¡Hola! ¡Soy Chef ${c}! ¿Cocinamos juntos?`,
+    ask: [(c, a) => `Chef ${c}, ¿me preparas ${a}?`, (c, a) => `¡Tengo mucha hambre! Quiero ${a}, ¡por favor!`, (c, a) => `${c}, ¡hoy me apetece ${a}!`, (c, a) => `¿Qué tal si cocinas ${a}?`],
+    pet: { '🐶': '¡Guau guau! ', '🐱': '¡Miau! ' },
+    needs: (list, tool) => `Necesitas: ${list}. Se cocina ${tool}.`, and: 'y',
+    unlockSay: a => `¡Nueva receta: ${a}!`,
+    good3: ['¡Riquísimo! ¡Me chupo los dedos!', '¡Perfecto! ¡Cocinas como un profesional!', c => `¡Delicioso! ¡Gracias, Chef ${c}!`, '¡Mmm! ¿Me das un poco más?'],
+    wrongTool: [(u, r) => `¿Cocinado ${u}? ¡Qué idea tan divertida! Normalmente se hace ${r}.`, (u, r) => `¿${cap(u)}? ¡Qué imaginación! La próxima vez prueba ${r}.`],
+    extra: [x => `¡Eh, también has puesto: ${x}! ¡Qué sorpresa!`, x => `Mmm... ¿${x}? ¡Sabe a astronauta!`, x => `¿Con ${x}? ¡Nunca lo había probado así!`],
+    missing: [x => `¡La próxima vez añade también: ${x}!`, x => `¡Bueno! Pero faltaba: ${x}.`],
+    tail2: [c => `¡Casi perfecto, Chef ${c}!`, '¡Ya casi lo tienes!'],
+    tail1: ['¡Te quiero igual!', '¿Lo intentamos otra vez? ¡Es divertido!', '¡Qué plato tan aventurero!', '¡El gato del vecino dice que está riquísimo!'],
+  },
 };
+const SPEECH_LANG = { it: 'it-IT', en: 'en-US', fr: 'fr-FR', de: 'de-DE', es: 'es-ES' };
 let lang = 'it';
 let T = STR.it;
 const toolName = t => T.tools[t][0];
@@ -717,8 +795,8 @@ function pickVoice() {
   if (!hasSpeech) return;
   try {
     const vs = speechSynthesis.getVoices();
-    const re = lang === 'it' ? /^it/i : /^en/i;
-    voice = vs.find(v => re.test(v.lang) && /(US|GB)/.test(v.lang)) || vs.find(v => re.test(v.lang)) || null;
+    const full = SPEECH_LANG[lang], re = new RegExp('^' + lang, 'i');
+    voice = vs.find(v => v.lang.replace('_', '-') === full) || vs.find(v => re.test(v.lang)) || null;
   } catch (e) { console.warn('Voices unavailable', e); }
 }
 if (hasSpeech) speechSynthesis.onvoiceschanged = pickVoice;
@@ -729,7 +807,7 @@ function say(text, pitch = 1.1) {
   try {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(stripEmoji(text));
-    u.lang = lang === 'it' ? 'it-IT' : 'en-US';
+    u.lang = SPEECH_LANG[lang];
     if (voice) u.voice = voice;
     u.rate = .95; u.pitch = pitch;
     speechSynthesis.speak(u);
@@ -1072,8 +1150,8 @@ function comment(r, res) {
   if (res.stars === 3) return call(pick(T.good3), c);
   const bits = [];
   if (res.wrongTool) bits.push(pick(T.wrongTool)(toolIn(res.tool), toolIn(r.t)));
-  if (res.extra.length) bits.push(pick(T.extra)(ingName(pick(res.extra)).toLowerCase()));
-  if (res.missing.length) bits.push(pick(T.missing)(ingName(pick(res.missing)).toLowerCase()));
+  if (res.extra.length) bits.push(pick(T.extra)(inSentence(ingName(pick(res.extra)))));
+  if (res.missing.length) bits.push(pick(T.missing)(inSentence(ingName(pick(res.missing)))));
   const tail = call(pick(res.stars === 2 ? T.tail2 : T.tail1), c);
   return bits.slice(0, 2).join(' ') + ' ' + tail;
 }
@@ -1140,7 +1218,7 @@ function showUnlock(r) {
     restartAnim($('#unlock-dish'), 'unlock-dish');
     $('#ov-unlock').hidden = false;
     SFX.fanfare(); confetti(90); platform.happy();
-    setTimeout(() => say(T.unlockSay(rArt(r)), 1.2), 500);
+    setTimeout(() => say(T.unlockSay(rArt(r), rName(r)), 1.2), 500);
     $('#btn-unlock-ok').onclick = () => { SFX.tap(); $('#ov-unlock').hidden = true; resolve(); };
   });
 }
@@ -1164,7 +1242,7 @@ function showHint() {
     `<div class="hint-item"><span class="chk">${TOOLS[r.t].svg}</span>${toolName(r.t)}</div><span class="hint-plus">+</span>` +
     r.i.map(id => `<div class="hint-item"><span class="chk">${icon(id)}</span>${esc(ingName(id))}</div>`).join('');
   $('#ov-hint').hidden = false;
-  const list = r.i.map(id => ingName(id).toLowerCase());
+  const list = r.i.map(id => inSentence(ingName(id)));
   say(T.needs(`${list.slice(0, -1).join(', ')} ${T.and} ${list[list.length - 1]}`, toolIn(r.t)), 1.1);
 }
 
@@ -1286,7 +1364,7 @@ async function boot() {
   try { await platform.init(); } catch (e) { console.warn('Platform init failed, playing without it', e); }
   store = platform.storage();
   state = load();
-  setLang(state.lang || (String(platform.locale()).toLowerCase().startsWith('it') ? 'it' : 'en'));
+  setLang(state.lang || String(platform.locale()).slice(0, 2).toLowerCase());
   bind();
   renderSoundBtn();
   if (!state.chef) openChef('onboarding');
